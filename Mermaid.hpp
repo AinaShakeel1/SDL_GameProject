@@ -3,8 +3,10 @@
 #define MERMAID_HPP
 
 #include "fish.hpp"
+#include <vector>
 #include <iostream>
 #include <SDL.h>
+#include "SDL_ttf.h"
 
 class Mermaid : public Fish {
 public:
@@ -17,11 +19,19 @@ public:
     void pushToVector();
     const SDL_Rect& getMoverRect() const;
 
+    int getLives() const;
+    int getScore() const;
+
+    void decreasedLives();
+    void increaseScore(int points);
+
 private:
+    int lives;
+    int score;
     int speed; // Adjust the speed as needed
     int frameleft; // Current animation frame
     int frameright;
-    std::vector<Mermaid> mermaidList;
+    static std::vector<Mermaid> mermaidList;
 };
 
 #endif // MERMAID_HPP

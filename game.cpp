@@ -178,9 +178,6 @@ void Game::run( )
 
 	lastSeashellSpawnTime = SDL_GetTicks();
 
-	int score=0;
-	int lives = 3;
-
 	while( !quit )
 	{
 		
@@ -220,15 +217,6 @@ void Game::run( )
 				killerFishList.push_back(newKillerFish);
 			}
 
-			// if(currenttime-lastspawntime>=spawninterval){
-			// 		lastspawntime=currenttime;
-			// 		int x = rand() % SCREEN_WIDTH;
-            // 		int y = rand() % SCREEN_HEIGHT;
-			// 		humania.createObject(x, y);
-			// }
-			
-
-			//spawnharmlessfish
 			if (currenttime - lastHarmlessSpawnTime >= harmlessSpawnInterval)
 			{
 				lastHarmlessSpawnTime = currenttime;
@@ -255,21 +243,20 @@ void Game::run( )
          }
 
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
-		for (size_t j = 0; j < killerFishList.size(); ++j) {
-			if (checkCollision(mermaidList[i].getMoverRect(), killerFishList[j].getMoverRect())) {
-				std::cout << "Collision between Mermaid and KillerFish!\n";
-				// Collision detected, handle it as needed
-				if (lives > 0)
-				{
-					lives --;
-					std::cout << "Lives Left: " << lives << std::endl;
-				}
-				else 
-					std::cout<< "Game End" << std::endl;
-					quit = true;
-				// Add code here to handle the collision (e.g., decrease health, end game, etc.)
-			}
-		}
+            for (size_t j = 0; j < killerFishList.size(); ++j) {
+                if (checkCollision(mermaidList[i].getMoverRect(), killerFishList[j].getMoverRect())) {
+                    // Collision detected, handle it as needed
+                    std::cout << "Collision between Mermaid and KillerFish!\n";
+                    // Decrease lives
+                    mermaidList[i].decreasedLives();
+                    std::cout << "Lives Left: " << mermaidList[i].getLives() << std::endl;
+                    if (mermaidList[i].getLives() <= 0) {
+                        std::cout << "Game Over" << std::endl;
+                        quit = true;
+                    }
+                    // Add any other code to handle the collision
+                }
+            }
 		}
 		//collision for seashell and mermaid
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
@@ -278,7 +265,7 @@ void Game::run( )
 					// Collision detected, handle it as needed
 					std::cout << "Collision between Mermaid and Seashell!\n";
 					// Increment the score
-					score += 5;
+					mermaidList[i].increaseScore(5);
 					// Optionally, remove the seashell from the list or mark it as collected
 					seashellList.erase(seashellList.begin() + j);
 				}
@@ -292,7 +279,7 @@ void Game::run( )
 		// humania.drawObjects(gRenderer, assets);
 
 		SDL_Color textColor = {255, 255, 255}; // White color
-		std::string scoreText = "Score: " + std::to_string(score);
+		std::string scoreText = "Score: " + std::to_string(mermaidList[0].getScore());
 		SDL_Surface* textSurface = TTF_RenderText_Solid(yourFont, scoreText.c_str(), textColor);
 		SDL_Texture* scoreTexture = SDL_CreateTextureFromSurface(gRenderer, textSurface);
 

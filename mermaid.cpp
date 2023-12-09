@@ -1,12 +1,8 @@
-// // mermaid.cpp
-
-
 #include "Mermaid.hpp"
-// Mermaid.cpp
 
+std::vector<Mermaid> Mermaid::mermaidList;
 
-
-Mermaid::Mermaid(int x, int y) : Fish(x, y, 51, 29, 3, 104), frameleft(0) {
+Mermaid::Mermaid(int x, int y) : Fish(x, y, 51, 29, 3, 104), frameleft(0), lives(3), score(0) {
     // Set initial pose or any other initialization logic
     srcRect = {3, 104, 51, 28};
     speed = 40; // Adjust the speed as needed
@@ -15,6 +11,24 @@ Mermaid::Mermaid(int x, int y) : Fish(x, y, 51, 29, 3, 104), frameleft(0) {
 Mermaid::~Mermaid() {
     // Cleanup if necessary
 }
+
+int Mermaid::getLives() const {
+    return lives;
+}
+
+int Mermaid::getScore() const {
+    return score;
+}
+
+void Mermaid::decreasedLives() {
+    if(lives > 0) 
+        lives--;
+}
+
+void Mermaid::increaseScore(int points) {
+    score += points;
+}
+
 const SDL_Rect& Mermaid::getMoverRect() const { // Add Mermaid:: here
     return moverRect;
 }

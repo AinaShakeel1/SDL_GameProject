@@ -36,8 +36,10 @@ private:
     SDL_Texture* assets3=nullptr;
     SDL_Texture* assets4=nullptr;
     
+
+    int killerFishCollisionCooldown = 3000;
+    Uint32 lastKillerFishCollisionTime = 0; 
     
-    // EndScreen* endScreen;
 
     std::vector<KillerFish> killerFishList;
     std::vector<HarmlessFish>harmlessfishlist;
@@ -46,7 +48,6 @@ private:
    
     Uint32 lastSeashellSpawnTime;
     Uint32 seashellSpawnInterval;
-
 
     Uint32 lastSpawnTime;
     Uint32 spawnInterval;

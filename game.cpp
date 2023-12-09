@@ -244,20 +244,24 @@ void Game::run( )
 
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
             for (size_t j = 0; j < killerFishList.size(); ++j) {
-                if (checkCollision(mermaidList[i].getMoverRect(), killerFishList[j].getMoverRect())) {
-                    // Collision detected, handle it as needed
+              if (checkCollision(mermaidList[i].getMoverRect(), killerFishList[j].getMoverRect())) {
+                Uint32 currentTime = SDL_GetTicks();
+                  if (currentTime - lastKillerFishCollisionTime >= killerFishCollisionCooldown) {
+                    // Sufficient cooldown time has passed, process the collision
+                    lastKillerFishCollisionTime = currentTime; // Update the last collision time
+
                     std::cout << "Collision between Mermaid and KillerFish!\n";
-                    // Decrease lives
+                    // Collision detected, handle it as needed
                     mermaidList[i].decreasedLives();
-                    std::cout << "Lives Left: " << mermaidList[i].getLives() << std::endl;
+                    std::cout << "Lives Left:" << mermaidList[i].getLives() << std::endl;
                     if (mermaidList[i].getLives() <= 0) {
-                        std::cout << "Game Over" << std::endl;
-                        quit = true;
+                       std::cout << "Game Over" << std::endl;
+                       quit = true;
                     }
-                    // Add any other code to handle the collision
-                }
-            }
-		}
+                 }
+             }
+         }
+     }
 		//collision for seashell and mermaid
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
 			for (size_t j = 0; j < seashellList.size(); ++j) {

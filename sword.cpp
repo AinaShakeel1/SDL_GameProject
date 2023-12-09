@@ -3,11 +3,11 @@
 
 Sword::Sword() {
     // Set initial pose and size for the seashell
-    seashellRect = { 0, 0, 73, 93 };
-    moverRect=seashellRect;
+    swordRect = { 0, 0, 73, 93 };
+    moverRect=swordRect;
 }
 
-Sword::~Seashell() {
+Sword::~Sword() {
     // Destructor (if needed)
 }
 const SDL_Rect& Sword::getMoverRect() const { // Add Mermaid:: here
@@ -15,12 +15,12 @@ const SDL_Rect& Sword::getMoverRect() const { // Add Mermaid:: here
 }
 void Sword::createSword(int x, int y) {
     // Create a new seashell at the specified position
-    seashellRect.x = x;
-    seashellRect.y = y;
-    moverRect = seashellRect;
+    swordRect.x = x;
+    swordRect.y = y;
+    moverRect = swordRect;
 }
 
 void Sword::draw(SDL_Renderer* renderer, SDL_Texture* assets) {
     // Draw the seashell
-    SDL_RenderCopy(renderer, assets, nullptr, &seashellRect);
+    SDL_RenderCopy(renderer, assets, nullptr, &swordRect);
 }

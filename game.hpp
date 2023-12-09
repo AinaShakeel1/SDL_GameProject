@@ -9,6 +9,8 @@
 #include "harmlessfish.hpp"
 #include "seashells.hpp"
 #include "Mermaid.hpp"
+#include "lives.hpp"
+#include "sword.hpp"
 // #include "endscreen.hpp"
 
 class Game {
@@ -35,6 +37,8 @@ private:
     SDL_Texture* assets2=nullptr;
     SDL_Texture* assets3=nullptr;
     SDL_Texture* assets4=nullptr;
+    SDL_Texture* assest5=nullptr;
+	SDL_Texture* assest6=nullptr;
     SDL_Texture* gTextureGameOver = nullptr;
 
     int killerFishCollisionCooldown = 3000;
@@ -45,6 +49,8 @@ private:
     std::vector<HarmlessFish>harmlessfishlist;
     std::vector<Seashell> seashellList;
     std::vector<Mermaid> mermaidList;
+    std::vector<Lives> livelist;
+    std::vector<Sword> swordlist;
    
     Uint32 lastSeashellSpawnTime;
     Uint32 seashellSpawnInterval;

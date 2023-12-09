@@ -85,12 +85,12 @@ bool Game::loadMedia()
 	assets3=loadTexture("seashellnew.png");
 	assets4=loadTexture("mermaid.png");
 	assest5=loadTexture("lives.png");
-	assest6=loadTexture("")
+	assest6=loadTexture("sword.jpg");
     gTexture = loadTexture("underwater.jpg");
 	gTextureGameOver = loadTexture("Game Over.png");
 
 
-	if(assets==NULL || gTexture==NULL || assets2==NULL || assets3==NULL || assets4==NULL || assest5 == NULL)
+	if(assets==NULL || gTexture==NULL || assets2==NULL || assets3==NULL || assets4==NULL || assest5 == NULL || assest6 == NULL)
     {
         printf("Unable to run due to error: %s\n",SDL_GetError());
         success =false;
@@ -106,10 +106,14 @@ void Game::close()
 	SDL_DestroyTexture(assets2);
 	SDL_DestroyTexture(assets3);
 	SDL_DestroyTexture(assets4);
+	SDL_DestroyTexture(assest5);
+	SDL_DestroyTexture(assest6);
 	assets=NULL;
 	assets2=NULL;
 	assets3=NULL;
 	assets4=NULL;
+	assest5=NULL;
+	assest6=NULL;
 	if (yourFont) {
         TTF_CloseFont(yourFont);
         yourFont = nullptr;
@@ -182,6 +186,8 @@ void Game::run( )
 
 	lastSeashellSpawnTime = SDL_GetTicks();
 
+	int score=0;
+
 	while( !quit )
 	{
 		
@@ -229,6 +235,15 @@ void Game::run( )
 				HarmlessFish newHarmlessFish(x, y);
 				harmlessfishlist.push_back(newHarmlessFish);
 			}
+
+			int c=0; //counter for lives
+			for (int i=0; i<3; i++){
+				Lives heart;
+				heart.createLives(910+c, 40);
+				livelist.push_back(heart);
+				c=c+20;
+			}
+		
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
             mermaidList[i].handleInput(e);
         }
@@ -327,6 +342,14 @@ void Game::run( )
         {
             mermaidList[i].drawObjects(gRenderer, assets4);
         }
+
+		for (size_t i = 0; i < livelist.size(); i++){
+			livelist[i].draw(gRenderer, assest5);
+		}
+
+		for (size_t i = 0; i < swordlist.size(); i++){
+			swordlist[i].draw(gRenderer, assest6);
+		}
 
 		// Handle input for the mermaid
         // for (size_t i = 0; i < mermaidList.size(); ++i) {

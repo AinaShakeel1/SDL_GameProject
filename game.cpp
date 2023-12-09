@@ -84,11 +84,13 @@ bool Game::loadMedia()
 	assets2=loadTexture("fish2.png");
 	assets3=loadTexture("seashellnew.png");
 	assets4=loadTexture("mermaid.png");
+	assest5=loadTexture("lives.png");
+	assest6=loadTexture("")
     gTexture = loadTexture("underwater.jpg");
 	gTextureGameOver = loadTexture("Game Over.png");
 
 
-	if(assets==NULL || gTexture==NULL || assets2==NULL || assets3==NULL || assets4==NULL)
+	if(assets==NULL || gTexture==NULL || assets2==NULL || assets3==NULL || assets4==NULL || assest5 == NULL)
     {
         printf("Unable to run due to error: %s\n",SDL_GetError());
         success =false;

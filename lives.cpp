@@ -3,7 +3,7 @@
 
 Lives::Lives() {
     // Set initial pose and size for the seashell
-    livesRect = { 0, 0, 20, 20 };
+    livesRect = {-50, -74, 20, 20};
     moverRect=livesRect;
 }
 

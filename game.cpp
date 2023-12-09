@@ -272,6 +272,7 @@ void Game::run( )
                     std::cout << "Collision between Mermaid and KillerFish!\n";
                     // Collision detected, handle it as needed
                     mermaidList[i].decreasedLives();
+					livelist.erase(livelist.begin() + j);
                     std::cout << "Lives Left:" << mermaidList[i].getLives() << std::endl;
                     if (mermaidList[i].getLives() <= 0)
 					{

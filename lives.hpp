@@ -2,7 +2,7 @@
 #include <SDL_image.h>
 #include <cstdlib>
 
-class Lives {
+class Lives{
 public:
     Lives();
     ~Lives();

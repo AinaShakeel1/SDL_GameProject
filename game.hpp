@@ -35,7 +35,7 @@ private:
     SDL_Texture* assets2=nullptr;
     SDL_Texture* assets3=nullptr;
     SDL_Texture* assets4=nullptr;
-    
+    SDL_Texture* gTextureGameOver = nullptr;
 
     int killerFishCollisionCooldown = 3000;
     Uint32 lastKillerFishCollisionTime = 0; 

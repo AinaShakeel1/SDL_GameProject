@@ -23,7 +23,7 @@ bool Game::init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow( "HU Mania", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "Mermaid Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
 		{
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
@@ -85,7 +85,8 @@ bool Game::loadMedia()
 	assets3=loadTexture("seashellnew.png");
 	assets4=loadTexture("mermaid.png");
     gTexture = loadTexture("underwater.jpg");
-	// gTexture2 = loadTexture("Game Over.png")
+	gTextureGameOver = loadTexture("Game Over.png");
+
 
 	if(assets==NULL || gTexture==NULL || assets2==NULL || assets3==NULL || assets4==NULL)
     {
@@ -113,7 +114,8 @@ void Game::close()
     }
 
 	SDL_DestroyTexture(gTexture);
-	// SDL_DestroyTexture(gTexture2);
+	SDL_DestroyTexture(gTextureGameOver);
+    gTextureGameOver = NULL;
 
 	
 	//Destroy window
@@ -254,10 +256,14 @@ void Game::run( )
                     // Collision detected, handle it as needed
                     mermaidList[i].decreasedLives();
                     std::cout << "Lives Left:" << mermaidList[i].getLives() << std::endl;
-                    if (mermaidList[i].getLives() <= 0) {
-                       std::cout << "Game Over" << std::endl;
-                       quit = true;
-                    }
+                    if (mermaidList[i].getLives() <= 0)
+					{
+						SDL_RenderClear(gRenderer);
+						SDL_RenderCopy(gRenderer, gTextureGameOver, NULL, NULL);
+						SDL_RenderPresent(gRenderer);
+						SDL_Delay(5000);  // Adjust the delay as needed
+						quit = true;
+					}
                  }
              }
          }

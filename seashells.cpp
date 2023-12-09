@@ -16,7 +16,7 @@ const SDL_Rect& Seashell::getMoverRect() const { // Add Mermaid:: here
 void Seashell::createSeashell(int x, int y) {
     // Create a new seashell at the specified position
     seashellRect.x = x;
-    seashellRect.y = y;
+    seashellRect.y = y + 90;
     moverRect = seashellRect;
 }
 

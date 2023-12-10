@@ -3,7 +3,7 @@
 
 Sword::Sword() {
     // Set initial pose and size for the seashell
-    swordRect = { 0, 0, 73, 93 };
+    swordRect = { 0, 0, 73, 73 };
     moverRect=swordRect;
 }
 

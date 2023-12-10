@@ -185,8 +185,8 @@ void Game::run( )
     Uint32 harmlessSpawnInterval = 5000; // Adjust the interval as needed
 
 	lastSeashellSpawnTime = SDL_GetTicks();
-
-	int score=0;
+	bool created = false;
+	bool collected = false;
 
 	while( !quit )
 	{
@@ -237,11 +237,19 @@ void Game::run( )
 			}
 
 			int c=0; //counter for lives
+			bool removelife;
 			for (int i=0; i<3; i++){
 				Lives heart;
 				heart.createLives(910+c, 40);
 				livelist.push_back(heart);
 				c=c+20;
+			}
+
+			if (mermaidList[0].getScore()>=50 and created == false){
+				Sword sword;
+				sword.createSword(450, 500);
+				swordlist.push_back(sword);
+				created = true;
 			}
 		
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
@@ -258,9 +266,14 @@ void Game::run( )
 		}
 		// Update the mermaid
         for (size_t i = 0; i < mermaidList.size(); ++i) {
-             mermaidList[i].update();
+            mermaidList[i].update();
          }
 
+		std::cout << removelife;
+		if (removelife){
+			livelist.pop_back(); //scope errors, hence making it update outside collision logic
+			removelife = false;
+		}
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
             for (size_t j = 0; j < killerFishList.size(); ++j) {
               if (checkCollision(mermaidList[i].getMoverRect(), killerFishList[j].getMoverRect())) {
@@ -271,9 +284,12 @@ void Game::run( )
 
                     std::cout << "Collision between Mermaid and KillerFish!\n";
                     // Collision detected, handle it as needed
+					if (collected = false){
                     mermaidList[i].decreasedLives();
-					livelist.erase(livelist.begin() + j);
+					// Remove a life from the livelist
+					removelife = true;
                     std::cout << "Lives Left:" << mermaidList[i].getLives() << std::endl;
+
                     if (mermaidList[i].getLives() <= 0)
 					{
 						SDL_RenderClear(gRenderer);
@@ -282,10 +298,14 @@ void Game::run( )
 						SDL_Delay(5000);  // Adjust the delay as needed
 						quit = true;
 					}
+					}
+					else{
+						killerFishList.erase(killerFishList.begin() + j);
+					}
                  }
              }
          }
-     }
+    }
 		//collision for seashell and mermaid
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
 			for (size_t j = 0; j < seashellList.size(); ++j) {
@@ -299,6 +319,20 @@ void Game::run( )
 				}
 			}
 		}
+
+		//collision for sword and mermaid
+		if (!swordlist.empty()) {
+    		if (checkCollision(mermaidList[0].getMoverRect(), swordlist[0].getMoverRect())) {
+				std::cout << "Collision between Mermaid and Sword!\n";
+				// Handle the collision between the mermaid and the sword here
+				// For example: mermaidList[0].handleSwordCollision();
+				// Remove the sword from the list
+				swordlist.clear();
+				collected = true;
+			}
+}
+
+
 		SDL_RenderClear(gRenderer); //removes everything from renderer
 		SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);//Draws background to renderer
 		//***********************draw the objects here********************

@@ -183,6 +183,8 @@ void Game::run( )
 	Uint32 spawnkillerinterval=3000;
 	Uint32 lastHarmlessSpawnTime = SDL_GetTicks();
     Uint32 harmlessSpawnInterval = 5000; // Adjust the interval as needed
+	Uint32 lastswordspawntime= SDL_GetTicks();
+	Uint32 swordSpawninterval = 5000;
 
 	lastSeashellSpawnTime = SDL_GetTicks();
 	bool created = false;
@@ -245,11 +247,20 @@ void Game::run( )
 				c=c+20;
 			}
 
-			if (mermaidList[0].getScore()>=50 and created == false){
-				Sword sword;
-				sword.createSword(450, 500);
-				swordlist.push_back(sword);
-				created = true;
+			if (mermaidList[0].getScore()>=5){
+				if (currenttime - lastswordspawntime >= swordSpawninterval) {
+            		lastswordspawntime = currenttime;
+
+            int x = rand() % SCREEN_WIDTH;
+            int y = rand() % SCREEN_HEIGHT;
+
+            Sword sword;
+            sword.createSword(450, 500);
+			swordlist.push_back(sword);
+
+            // Generate a new random interval for the next seashell spawn
+            swordSpawninterval = rand() % 10000 + 3000; // Random interval between 3000 and 13000 milliseconds
+			}
 			}
 		
 		for (size_t i = 0; i < mermaidList.size(); ++i) {

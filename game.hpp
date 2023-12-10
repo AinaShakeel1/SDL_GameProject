@@ -57,6 +57,10 @@ private:
 
     Uint32 lastSpawnTime;
     Uint32 spawnInterval;
+
+    Uint32 lastswordspawntime;
+	Uint32 swordSpawninterval;
+
     //font
     TTF_Font* yourFont;
 };

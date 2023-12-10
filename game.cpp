@@ -258,7 +258,7 @@ void Game::run( )
 				swordlist.push_back(sword);
 
 				// Generate a new random interval for the next seashell spawn
-				swordSpawninterval = rand() % 10000 + 3000; // Random interval between 3000 and 13000 milliseconds
+				swordSpawninterval = rand() % 100000 + 300000; // Random interval between 1 and 5 mins (these are miliseconds)
 			}
 		}
 		

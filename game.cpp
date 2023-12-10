@@ -4,7 +4,6 @@
 
 bool Game::init()
 {   	
-	
 	//Initialization flag
 	bool success = true;
 
@@ -56,6 +55,7 @@ bool Game::init()
                
 			}
 		}
+
 		if (TTF_Init() == -1) {
 		printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
 		success = false;
@@ -174,8 +174,6 @@ bool Game:: checkCollision(const SDL_Rect& rect1, const SDL_Rect& rect2){
 void Game::run( )
 
 {
-	//HUMania humania;
-	//Mermaid mer(500,300);
 	bool quit = false;
 	SDL_Event e;
 
@@ -187,7 +185,6 @@ void Game::run( )
 	Uint32 swordSpawninterval = 5000;
 
 	lastSeashellSpawnTime = SDL_GetTicks();
-	bool created = false;
 	bool collected = false;
 
 	while( !quit )
@@ -219,49 +216,51 @@ void Game::run( )
             seashellSpawnInterval = rand() % 10000 + 3000; // Random interval between 3000 and 13000 milliseconds
         }
 
-			//killer fish spwans
-			 if (currenttime - lastkillerspawntime >= spawnkillerinterval)
+		//killer fish spwans
+			if (currenttime - lastkillerspawntime >= spawnkillerinterval)
+		{
+			lastkillerspawntime = currenttime;
+			int x = rand() % SCREEN_WIDTH;
+			int y = rand() % SCREEN_HEIGHT;
+			KillerFish newKillerFish(x, y);
+			killerFishList.push_back(newKillerFish);
+		}
+
+		if (currenttime - lastHarmlessSpawnTime >= harmlessSpawnInterval)
+		{
+			lastHarmlessSpawnTime = currenttime;
+			int x = rand() % SCREEN_WIDTH;
+			int y = rand() % SCREEN_HEIGHT;
+			HarmlessFish newHarmlessFish(x, y);
+			harmlessfishlist.push_back(newHarmlessFish);
+		}
+
+		int c=0; //counter for lives
+		bool removelife;
+		for (int i=0; i<mermaidList[0].getLives(); i++)
+		{
+			Lives heart;
+			heart.createLives(910+c, 40);
+			livelist.push_back(heart);
+			c=c+20;
+		}
+
+		if (mermaidList[0].getScore()>=5){
+			if (currenttime - lastswordspawntime >= swordSpawninterval) 
 			{
-				lastkillerspawntime = currenttime;
+				lastswordspawntime = currenttime;
+
 				int x = rand() % SCREEN_WIDTH;
 				int y = rand() % SCREEN_HEIGHT;
-				KillerFish newKillerFish(x, y);
-				killerFishList.push_back(newKillerFish);
+
+				Sword sword;
+				sword.createSword(x, y);
+				swordlist.push_back(sword);
+
+				// Generate a new random interval for the next seashell spawn
+				swordSpawninterval = rand() % 10000 + 3000; // Random interval between 3000 and 13000 milliseconds
 			}
-
-			if (currenttime - lastHarmlessSpawnTime >= harmlessSpawnInterval)
-			{
-				lastHarmlessSpawnTime = currenttime;
-				int x = rand() % SCREEN_WIDTH;
-				int y = rand() % SCREEN_HEIGHT;
-				HarmlessFish newHarmlessFish(x, y);
-				harmlessfishlist.push_back(newHarmlessFish);
-			}
-
-			int c=0; //counter for lives
-			bool removelife;
-			for (int i=0; i<3; i++){
-				Lives heart;
-				heart.createLives(910+c, 40);
-				livelist.push_back(heart);
-				c=c+20;
-			}
-
-			if (mermaidList[0].getScore()>=5){
-				if (currenttime - lastswordspawntime >= swordSpawninterval) {
-            		lastswordspawntime = currenttime;
-
-            int x = rand() % SCREEN_WIDTH;
-            int y = rand() % SCREEN_HEIGHT;
-
-            Sword sword;
-            sword.createSword(450, 500);
-			swordlist.push_back(sword);
-
-            // Generate a new random interval for the next seashell spawn
-            swordSpawninterval = rand() % 10000 + 3000; // Random interval between 3000 and 13000 milliseconds
-			}
-			}
+		}
 		
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
             mermaidList[i].handleInput(e);
@@ -278,13 +277,12 @@ void Game::run( )
 		// Update the mermaid
         for (size_t i = 0; i < mermaidList.size(); ++i) {
             mermaidList[i].update();
-         }
+        }
 
-		std::cout << removelife;
-		if (removelife){
-			livelist.pop_back(); //scope errors, hence making it update outside collision logic
-			removelife = false;
-		}
+		// if (removelife){
+		// 	livelist.pop_back(); //scope errors, hence making it update outside collision logic
+		// 	removelife = false;
+		// }
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
             for (size_t j = 0; j < killerFishList.size(); ++j) {
               if (checkCollision(mermaidList[i].getMoverRect(), killerFishList[j].getMoverRect())) {
@@ -295,10 +293,11 @@ void Game::run( )
 
                     std::cout << "Collision between Mermaid and KillerFish!\n";
                     // Collision detected, handle it as needed
-					if (collected = false){
+					if (collected == false){
                     mermaidList[i].decreasedLives();
 					// Remove a life from the livelist
-					removelife = true;
+    				livelist.erase(livelist.end() - 1); // Erase the last element
+
                     std::cout << "Lives Left:" << mermaidList[i].getLives() << std::endl;
 
                     if (mermaidList[i].getLives() <= 0)
@@ -310,8 +309,9 @@ void Game::run( )
 						quit = true;
 					}
 					}
-					else{
+					else if (collected == true){
 						killerFishList.erase(killerFishList.begin() + j);
+						collected = false;
 					}
                  }
              }

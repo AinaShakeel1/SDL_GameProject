@@ -85,12 +85,12 @@ bool Game::loadMedia()
 	assets3=loadTexture("seashellnew.png");
 	assets4=loadTexture("mermaid.png");
 	assest5=loadTexture("lives.png");
-	assest6=loadTexture("sword.jpg");
+	assest6=loadTexture("sword.png");
     gTexture = loadTexture("underwater.jpg");
 	gTextureGameOver = loadTexture("Game Over.png");
+	gTextureWinningScreen = loadTexture("WinningScreen.png");
 
-
-	if(assets==NULL || gTexture==NULL || assets2==NULL || assets3==NULL || assets4==NULL || assest5 == NULL || assest6 == NULL)
+	if(assets==NULL || gTexture==NULL || assets2==NULL || assets3==NULL || assets4==NULL || assest5 == NULL || assest6 == NULL || gTextureWinningScreen == NULL || gTextureGameOver == NULL)
     {
         printf("Unable to run due to error: %s\n",SDL_GetError());
         success =false;
@@ -121,8 +121,9 @@ void Game::close()
 
 	SDL_DestroyTexture(gTexture);
 	SDL_DestroyTexture(gTextureGameOver);
+	SDL_DestroyTexture(gTextureWinningScreen);
     gTextureGameOver = NULL;
-
+	gTextureWinningScreen = NULL;
 	
 	//Destroy window
 	SDL_DestroyRenderer( gRenderer );
@@ -187,6 +188,17 @@ void Game::run( )
 	lastSeashellSpawnTime = SDL_GetTicks();
 	bool collected = false;
 
+
+	int c=0; //counter for lives
+	bool removelife;
+	for (int i=0; i<mermaidList[0].getLives(); i++)
+	{
+		Lives heart;
+		heart.createLives(910+c, 40);
+		livelist.push_back(heart);
+		c=c+20;
+	}
+	
 	while( !quit )
 	{
 		
@@ -205,8 +217,11 @@ void Game::run( )
 			if (currenttime - lastSeashellSpawnTime >= seashellSpawnInterval) {
             lastSeashellSpawnTime = currenttime;
 
-            int x = rand() % SCREEN_WIDTH;
-            int y = rand() % SCREEN_HEIGHT;
+			const int seashellPadding = 100; // Adjust the padding as needed
+			int x = seashellPadding + rand() % SCREEN_WIDTH;
+			int y = seashellPadding + rand() % SCREEN_HEIGHT;
+            // int x = rand() % SCREEN_WIDTH;
+            // int y = rand() % SCREEN_HEIGHT;
 
             Seashell newSeashell;
             newSeashell.createSeashell(x, y);
@@ -235,23 +250,15 @@ void Game::run( )
 			harmlessfishlist.push_back(newHarmlessFish);
 		}
 
-		int c=0; //counter for lives
-		bool removelife;
-		for (int i=0; i<mermaidList[0].getLives(); i++)
-		{
-			Lives heart;
-			heart.createLives(910+c, 40);
-			livelist.push_back(heart);
-			c=c+20;
-		}
-
-		if (mermaidList[0].getScore()>=5){
+		if (mermaidList[0].getScore()>=20){
 			if (currenttime - lastswordspawntime >= swordSpawninterval) 
 			{
 				lastswordspawntime = currenttime;
-
-				int x = rand() % SCREEN_WIDTH;
-				int y = rand() % SCREEN_HEIGHT;
+				const int Padding = 50; // Adjust the padding as needed
+				int x = Padding + rand() % (SCREEN_WIDTH - 2 * Padding);
+				int y = Padding + rand() % (SCREEN_HEIGHT - 2 * Padding);
+				// int x = rand() % SCREEN_WIDTH;
+				// int y = rand() % SCREEN_HEIGHT;
 
 				Sword sword;
 				sword.createSword(x, y);
@@ -279,10 +286,19 @@ void Game::run( )
             mermaidList[i].update();
         }
 
-		// if (removelife){
-		// 	livelist.pop_back(); //scope errors, hence making it update outside collision logic
-		// 	removelife = false;
+		// //update the sword object
+		// for (size_t i = 0; i < swordlist.size(); i++) {
+    	// 	swordlist[i].update();
 		// }
+
+		if (mermaidList[0].getScore() >= 100) {
+            SDL_RenderClear(gRenderer);
+            SDL_RenderCopy(gRenderer, gTextureWinningScreen, NULL, NULL);
+            SDL_RenderPresent(gRenderer);
+            SDL_Delay(5000);  // Adjust the delay as needed
+            quit = true;
+        }
+
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
             for (size_t j = 0; j < killerFishList.size(); ++j) {
               if (checkCollision(mermaidList[i].getMoverRect(), killerFishList[j].getMoverRect())) {
@@ -296,8 +312,8 @@ void Game::run( )
 					if (collected == false){
                     mermaidList[i].decreasedLives();
 					// Remove a life from the livelist
-    				livelist.erase(livelist.end() - 1); // Erase the last element
-
+                    killerFishList.erase(killerFishList.begin() + j);
+					livelist.pop_back(); //erase the last element
                     std::cout << "Lives Left:" << mermaidList[i].getLives() << std::endl;
 
                     if (mermaidList[i].getLives() <= 0)
@@ -311,6 +327,7 @@ void Game::run( )
 					}
 					else if (collected == true){
 						killerFishList.erase(killerFishList.begin() + j);
+						mermaidList[i].increaseScore(15);
 						collected = false;
 					}
                  }
@@ -365,6 +382,7 @@ void Game::run( )
 
 		SDL_FreeSurface(textSurface);
 		SDL_DestroyTexture(scoreTexture);
+
 		// Draw the objects
         for (size_t i = 0; i < killerFishList.size(); ++i)
 		{

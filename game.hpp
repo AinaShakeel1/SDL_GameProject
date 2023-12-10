@@ -40,6 +40,7 @@ private:
     SDL_Texture* assest5=nullptr;
 	SDL_Texture* assest6=nullptr;
     SDL_Texture* gTextureGameOver = nullptr;
+    SDL_Texture* gTextureWinningScreen = nullptr;
 
     int killerFishCollisionCooldown = 3000;
     Uint32 lastKillerFishCollisionTime = 0; 

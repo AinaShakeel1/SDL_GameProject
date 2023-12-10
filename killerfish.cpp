@@ -16,7 +16,7 @@ const SDL_Rect& KillerFish::getMoverRect() const { // Add Mermaid:: here
 
 void KillerFish::update() {
     // Update logic goes here (if needed)
-    moverRect.x += 5;
+    moverRect.x += 10;
 
     // Update the frame
     frame = (frame + 1) % 3;

@@ -14,7 +14,7 @@ HarmlessFish::~HarmlessFish() {
 
 void HarmlessFish::update() {
     // Update logic goes here (if needed)
-    moverRect.x -= 5;
+    moverRect.x -= 10;
 
     // Update the frame
     frame = (frame + 1) % 3; // Assuming 3 animation frames

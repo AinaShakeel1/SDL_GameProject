@@ -51,8 +51,6 @@ bool Game::init()
 				}
 				Mermaid playerMermaid(500,300);
                 mermaidList.push_back(playerMermaid);
-				// Create a Mermaid object and add it to the mermaidList
-               
 			}
 		}
 
@@ -183,14 +181,6 @@ SDL_Texture* Game::loadTexture( std::string path )
 
 	return newTexture;
 }
-// bool Game:: checkCollision(const SDL_Rect& rect1, const SDL_Rect& rect2){
-// 	return (
-//         rect1.x < rect2.x + rect2.w &&
-//         rect1.x + rect1.w > rect2.x &&
-//         rect1.y < rect2.y + rect2.h &&
-//         rect1.y + rect1.h > rect2.y
-//     );
-// }
 
 void Game::run( )
 
@@ -257,10 +247,10 @@ void Game::run( )
             lastSeashellSpawnTime = currenttime;
 
 			const int seashellPadding = 100; // Adjust the padding as needed
-			int x = seashellPadding + rand() % (SCREEN_WIDTH - 2 * seashellPadding);
-			int y = seashellPadding + rand() % (SCREEN_WIDTH - 2 * seashellPadding);
-            // int x = rand() % SCREEN_WIDTH;
-            // int y = rand() % SCREEN_HEIGHT;
+			// int x = seashellPadding + rand() % ((SCREEN_WIDTH-50) - 2 * seashellPadding);
+			// int y = seashellPadding + rand() % ((SCREEN_WIDTH-50) - 2 * seashellPadding);
+            int x = rand() % (SCREEN_WIDTH-50);
+            int y = rand() % (SCREEN_HEIGHT-50);
 
             Seashell newSeashell;
             newSeashell.createSeashell(x, y);
@@ -274,8 +264,10 @@ void Game::run( )
 		lastflowerSpawnTime = currenttime;
 
 		const int flowerPadding = 100; // Adjust the padding as needed
-		int x = flowerPadding + rand() % (SCREEN_WIDTH - 2 * flowerPadding);
-		int y = flowerPadding + rand() % (SCREEN_HEIGHT - 2 * flowerPadding);
+		// int x = flowerPadding + rand() % ((SCREEN_WIDTH-50) - 2 * flowerPadding);
+		// int y = flowerPadding + rand() % ((SCREEN_HEIGHT-50) - 2 * flowerPadding);
+		int x = rand() % (SCREEN_WIDTH-50);
+        int y = rand() % (SCREEN_HEIGHT-50);
 
 		flower newFlower;
 		newFlower.createflower(x, y);
@@ -288,8 +280,8 @@ void Game::run( )
 			if (currenttime - lastkillerspawntime >= spawnkillerinterval)
 		{
 			lastkillerspawntime = currenttime;
-			int x = rand() % SCREEN_WIDTH;
-			int y = rand() % SCREEN_HEIGHT;
+			int x = rand() % (SCREEN_WIDTH-50);
+            int y = rand() % (SCREEN_HEIGHT-100);
 			KillerFish newKillerFish(x, y);
 			killerFishList.push_back(newKillerFish);
 		}
@@ -297,8 +289,8 @@ void Game::run( )
 		if (currenttime - lastHarmlessSpawnTime >= harmlessSpawnInterval)
 		{
 			lastHarmlessSpawnTime = currenttime;
-			int x = rand() % SCREEN_WIDTH;
-			int y = rand() % SCREEN_HEIGHT;
+			int x = rand() % (SCREEN_WIDTH-50);
+            int y = rand() % (SCREEN_HEIGHT-50);
 			HarmlessFish newHarmlessFish(x, y);
 			harmlessfishlist.push_back(newHarmlessFish);
 		}
@@ -308,10 +300,10 @@ void Game::run( )
 			{
 				lastswordspawntime = currenttime;
 				const int Padding = 50; // Adjust the padding as needed
-				int x = Padding + rand() % (SCREEN_WIDTH - 2 * Padding);
-				int y = Padding + rand() % (SCREEN_HEIGHT - 2 * Padding);
-				// int x = rand() % SCREEN_WIDTH;
-				// int y = rand() % SCREEN_HEIGHT;
+				// int x = Padding + rand() % ((SCREEN_WIDTH-50) - 2 * Padding);
+				// int y = Padding + rand() % ((SCREEN_HEIGHT-50) - 2 * Padding);
+				int x = rand() % (SCREEN_WIDTH-50);
+            	int y = rand() % (SCREEN_HEIGHT-50);
 
 				Sword sword;
 				sword.createSword(x, y);

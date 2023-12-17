@@ -251,7 +251,7 @@ void Game::run( )
             int y = rand() % (SCREEN_HEIGHT-50);
 
             Seashell newSeashell;
-            newSeashell.createSeashell(x, y);
+            newSeashell.create(x, y);
             seashellList.push_back(newSeashell);
 
             // Generate a new random interval for the next seashell spawn
@@ -265,7 +265,7 @@ void Game::run( )
         int y = rand() % (SCREEN_HEIGHT-50);
 
 		flower newFlower;
-		newFlower.createflower(x, y);
+		newFlower.create(x, y);
 		flowerlist.push_back(newFlower);
 
 		// Generate a new random interval for the next flower spawn

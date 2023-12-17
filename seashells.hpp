@@ -1,4 +1,3 @@
-// Seashell.hpp
 #ifndef SEASHELL_HPP
 #define SEASHELL_HPP
 
@@ -6,14 +5,16 @@
 #include <SDL_image.h>
 #include <cstdlib>
 
-class Seashell {
+#include "crownComponents.hpp"
+
+class Seashell : public CrownComponents {
 public:
     Seashell();
     ~Seashell();
 
-    void createSeashell(int x, int y);
-    void draw(SDL_Renderer* renderer, SDL_Texture* assets);
-    const SDL_Rect& getMoverRect() const;
+    void create(int x, int y) override;
+    void draw(SDL_Renderer* renderer, SDL_Texture* assets) override;
+    const SDL_Rect& getMoverRect() const override;
 private:
     SDL_Rect seashellRect;
     SDL_Rect moverRect;

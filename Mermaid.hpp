@@ -18,6 +18,7 @@ public:
     void drawObjects(SDL_Renderer* renderer, SDL_Texture* assets);
     void pushToVector();
     const SDL_Rect& getMoverRect() const;
+    bool checkCollision(const SDL_Rect& rect1, const SDL_Rect& rect2);
 
     int getLives() const;
     int getScore() const;

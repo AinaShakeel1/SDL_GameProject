@@ -11,6 +11,7 @@
 #include "Mermaid.hpp"
 #include "lives.hpp"
 #include "sword.hpp"
+#include <SDL_mixer.h>
 // #include "endscreen.hpp"
 
 class Game {
@@ -22,13 +23,13 @@ public:
     
     SDL_Texture* loadTexture(std::string path);
     void run();
-    bool checkCollision(const SDL_Rect& rect1, const SDL_Rect& rect2);
+    // bool checkCollision(const SDL_Rect& rect1, const SDL_Rect& rect2);
 
 private:
     
     const int SCREEN_WIDTH = 1000;
     const int SCREEN_HEIGHT = 600;
-
+    Mix_Music* backgroundMusic;
     SDL_Window* gWindow = nullptr;
     SDL_Renderer* gRenderer = nullptr;
     SDL_Texture* gTexture = nullptr;

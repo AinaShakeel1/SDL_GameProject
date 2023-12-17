@@ -71,6 +71,10 @@ bool Game::init()
 			}
 		
 	}
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+        return false;
+    }
 
 	return success;
 }
@@ -95,7 +99,15 @@ bool Game::loadMedia()
         printf("Unable to run due to error: %s\n",SDL_GetError());
         success =false;
     }
-	
+	backgroundMusic = Mix_LoadMUS("Sakura-Girl-Beach-chosic.com_.mp3"); 
+	 if (!backgroundMusic) {
+        printf("Failed to load background music! SDL_mixer Error: %s\n", Mix_GetError());
+        return false;
+    } else {
+        // Play the background music in a loop (-1 means loop indefinitely)
+        Mix_PlayMusic(backgroundMusic, -1);
+    }
+
 	return success;
 }
 
@@ -118,6 +130,8 @@ void Game::close()
         TTF_CloseFont(yourFont);
         yourFont = nullptr;
     }
+	Mix_FreeMusic(backgroundMusic);
+	backgroundMusic = nullptr;
 
 	SDL_DestroyTexture(gTexture);
 	SDL_DestroyTexture(gTextureGameOver);
@@ -163,14 +177,14 @@ SDL_Texture* Game::loadTexture( std::string path )
 
 	return newTexture;
 }
-bool Game:: checkCollision(const SDL_Rect& rect1, const SDL_Rect& rect2){
-	return (
-        rect1.x < rect2.x + rect2.w &&
-        rect1.x + rect1.w > rect2.x &&
-        rect1.y < rect2.y + rect2.h &&
-        rect1.y + rect1.h > rect2.y
-    );
-}
+// bool Game:: checkCollision(const SDL_Rect& rect1, const SDL_Rect& rect2){
+// 	return (
+//         rect1.x < rect2.x + rect2.w &&
+//         rect1.x + rect1.w > rect2.x &&
+//         rect1.y < rect2.y + rect2.h &&
+//         rect1.y + rect1.h > rect2.y
+//     );
+// }
 
 void Game::run( )
 
@@ -301,7 +315,7 @@ void Game::run( )
 
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
             for (size_t j = 0; j < killerFishList.size(); ++j) {
-              if (checkCollision(mermaidList[i].getMoverRect(), killerFishList[j].getMoverRect())) {
+              if (mermaidList[i].checkCollision(mermaidList[i].getMoverRect(), killerFishList[j].getMoverRect())) {
                 Uint32 currentTime = SDL_GetTicks();
                   if (currentTime - lastKillerFishCollisionTime >= killerFishCollisionCooldown) {
                     // Sufficient cooldown time has passed, process the collision
@@ -337,7 +351,7 @@ void Game::run( )
 		//collision for seashell and mermaid
 		for (size_t i = 0; i < mermaidList.size(); ++i) {
 			for (size_t j = 0; j < seashellList.size(); ++j) {
-				if (checkCollision(mermaidList[i].getMoverRect(), seashellList[j].getMoverRect())) {
+				if (mermaidList[i].checkCollision(mermaidList[i].getMoverRect(), seashellList[j].getMoverRect())) {
 					// Collision detected, handle it as needed
 					std::cout << "Collision between Mermaid and Seashell!\n";
 					// Increment the score
@@ -350,7 +364,7 @@ void Game::run( )
 
 		//collision for sword and mermaid
 		if (!swordlist.empty()) {
-    		if (checkCollision(mermaidList[0].getMoverRect(), swordlist[0].getMoverRect())) {
+    		if (mermaidList[0].checkCollision(mermaidList[0].getMoverRect(), swordlist[0].getMoverRect())) {
 				std::cout << "Collision between Mermaid and Sword!\n";
 				// Handle the collision between the mermaid and the sword here
 				// For example: mermaidList[0].handleSwordCollision();

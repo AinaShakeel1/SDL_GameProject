@@ -355,7 +355,7 @@ void Game::run( )
 					// Collision detected, handle it as needed
 					std::cout << "Collision between Mermaid and Seashell!\n";
 					// Increment the score
-					mermaidList[i].increaseScore(5);
+					mermaidList[i] += 5;
 					// Optionally, remove the seashell from the list or mark it as collected
 					seashellList.erase(seashellList.begin() + j);
 				}

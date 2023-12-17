@@ -88,6 +88,10 @@ bool Mermaid:: checkCollision(const SDL_Rect& rect1, const SDL_Rect& rect2){
         rect1.y + rect1.h > rect2.y
     );
 }
+Mermaid& Mermaid::operator+=(int points) {
+    this->score += points;
+    return *this;
+}
 
 // void Mermaid::update() {
 //     // Update logic for the mermaid (if needed)

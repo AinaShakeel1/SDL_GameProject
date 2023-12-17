@@ -25,7 +25,7 @@ public:
 
     void decreasedLives();
     void increaseScore(int points);
-
+    Mermaid& operator+=(int points);
 private:
     int lives;
     int score;

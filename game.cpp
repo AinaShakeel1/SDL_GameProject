@@ -90,12 +90,13 @@ bool Game::loadMedia()
 	assets4=loadTexture("mermaid.png");
 	assest5=loadTexture("lives.png");
 	assest6=loadTexture("sword.png");
+	asset7=loadTexture("flower.png");
     gTexture = loadTexture("underwater.jpg");
 	gTextureGameOver = loadTexture("Game Over.png");
 	gTextureWinningScreen = loadTexture("WinningScreen.png");
 	gTextureGameStart = loadTexture("Game Start.png");
 
-	if(assets==NULL || gTexture==NULL || assets2==NULL || assets3==NULL || assets4==NULL || assest5 == NULL || assest6 == NULL || gTextureWinningScreen == NULL || gTextureGameOver == NULL)
+	if(assets==NULL || gTexture==NULL || assets2==NULL || assets3==NULL || assets4==NULL || assest5 == NULL || assest6 == NULL || asset7==NULL || gTextureWinningScreen == NULL || gTextureGameOver == NULL)
     {
         printf("Unable to run due to error: %s\n",SDL_GetError());
         success =false;
@@ -121,12 +122,14 @@ void Game::close()
 	SDL_DestroyTexture(assets4);
 	SDL_DestroyTexture(assest5);
 	SDL_DestroyTexture(assest6);
+	SDL_DestroyTexture(asset7);
 	assets=NULL;
 	assets2=NULL;
 	assets3=NULL;
 	assets4=NULL;
 	assest5=NULL;
 	assest6=NULL;
+	asset7=NULL;
 	if (yourFont) {
         TTF_CloseFont(yourFont);
         yourFont = nullptr;
@@ -201,8 +204,9 @@ void Game::run( )
     Uint32 harmlessSpawnInterval = 5000; // Adjust the interval as needed
 	Uint32 lastswordspawntime= SDL_GetTicks();
 	Uint32 swordSpawninterval = 5000;
-
+	lastflowerSpawnTime=SDL_GetTicks();
 	lastSeashellSpawnTime = SDL_GetTicks();
+
 	bool collected = false;
 
 
@@ -253,8 +257,8 @@ void Game::run( )
             lastSeashellSpawnTime = currenttime;
 
 			const int seashellPadding = 100; // Adjust the padding as needed
-			int x = seashellPadding + rand() % SCREEN_WIDTH;
-			int y = seashellPadding + rand() % SCREEN_HEIGHT;
+			int x = seashellPadding + rand() % (SCREEN_WIDTH - 2 * seashellPadding);
+			int y = seashellPadding + rand() % (SCREEN_WIDTH - 2 * seashellPadding);
             // int x = rand() % SCREEN_WIDTH;
             // int y = rand() % SCREEN_HEIGHT;
 
@@ -263,9 +267,23 @@ void Game::run( )
             seashellList.push_back(newSeashell);
 
             // Generate a new random interval for the next seashell spawn
-            seashellSpawnInterval = rand() % 10000 + 3000; // Random interval between 3000 and 13000 milliseconds
+            seashellSpawnInterval = rand() % 10000 + 3000;
         }
+		//for flowers
+		if (currenttime - lastflowerSpawnTime >= flowerSpawnInterval) {
+		lastflowerSpawnTime = currenttime;
 
+		const int flowerPadding = 100; // Adjust the padding as needed
+		int x = flowerPadding + rand() % (SCREEN_WIDTH - 2 * flowerPadding);
+		int y = flowerPadding + rand() % (SCREEN_HEIGHT - 2 * flowerPadding);
+
+		flower newFlower;
+		newFlower.createflower(x, y);
+		flowerlist.push_back(newFlower);
+
+		// Generate a new random interval for the next flower spawn
+		flowerSpawnInterval = rand() % 10000 + 3000;
+	}
 		//killer fish spwans
 			if (currenttime - lastkillerspawntime >= spawnkillerinterval)
 		{
@@ -382,7 +400,19 @@ void Game::run( )
 				}
 			}
 		}
-
+		//collision for flower and mermaid
+		for (size_t i = 0; i < mermaidList.size(); ++i) {
+			for (size_t j = 0; j < flowerlist.size(); ++j) {
+				if (mermaidList[i].checkCollision(mermaidList[i].getMoverRect(), flowerlist[j].getMoverRect())) {
+					// Collision detected, handle it as needed
+					std::cout << "Collision between Mermaid and Seashell!\n";
+					// Increment the score
+					mermaidList[i] += 1;
+					// Optionally, remove the seashell from the list or mark it as collected
+					flowerlist.erase(flowerlist.begin() + j);
+				}
+			}
+		}
 		//collision for sword and mermaid
 		if (!swordlist.empty()) {
     		if (mermaidList[0].checkCollision(mermaidList[0].getMoverRect(), swordlist[0].getMoverRect())) {
@@ -449,6 +479,9 @@ void Game::run( )
 		for (size_t i = 0; i < swordlist.size(); i++){
 			swordlist[i].draw(gRenderer, assest6);
 		}
+		 for (size_t i = 0; i < flowerlist.size(); ++i) {
+            flowerlist[i].draw(gRenderer, asset7);
+        }
 
 		// Handle input for the mermaid
         // for (size_t i = 0; i < mermaidList.size(); ++i) {

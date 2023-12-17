@@ -12,6 +12,7 @@
 #include "lives.hpp"
 #include "sword.hpp"
 #include <SDL_mixer.h>
+#include "flower.hpp"
 // #include "endscreen.hpp"
 
 class Game {
@@ -40,6 +41,7 @@ private:
     SDL_Texture* assets4=nullptr;
     SDL_Texture* assest5=nullptr;
 	SDL_Texture* assest6=nullptr;
+    SDL_Texture* asset7=nullptr;
     SDL_Texture* gTextureGameOver = nullptr;
     SDL_Texture* gTextureWinningScreen = nullptr;
     SDL_Texture* gTextureGameStart = nullptr;
@@ -54,7 +56,7 @@ private:
     std::vector<Mermaid> mermaidList;
     std::vector<Lives> livelist;
     std::vector<Sword> swordlist;
-   
+    std::vector<flower>flowerlist;
     Uint32 lastSeashellSpawnTime;
     Uint32 seashellSpawnInterval;
 
@@ -64,6 +66,8 @@ private:
     Uint32 lastswordspawntime;
 	Uint32 swordSpawninterval;
 
+    Uint32 lastflowerSpawnTime;
+    Uint32 flowerSpawnInterval;
     //font
     TTF_Font* yourFont;
 };

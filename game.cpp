@@ -247,8 +247,6 @@ void Game::run( )
             lastSeashellSpawnTime = currenttime;
 
 			const int seashellPadding = 100; // Adjust the padding as needed
-			// int x = seashellPadding + rand() % ((SCREEN_WIDTH-50) - 2 * seashellPadding);
-			// int y = seashellPadding + rand() % ((SCREEN_WIDTH-50) - 2 * seashellPadding);
             int x = rand() % (SCREEN_WIDTH-50);
             int y = rand() % (SCREEN_HEIGHT-50);
 
@@ -263,9 +261,6 @@ void Game::run( )
 		if (currenttime - lastflowerSpawnTime >= flowerSpawnInterval) {
 		lastflowerSpawnTime = currenttime;
 
-		const int flowerPadding = 100; // Adjust the padding as needed
-		// int x = flowerPadding + rand() % ((SCREEN_WIDTH-50) - 2 * flowerPadding);
-		// int y = flowerPadding + rand() % ((SCREEN_HEIGHT-50) - 2 * flowerPadding);
 		int x = rand() % (SCREEN_WIDTH-50);
         int y = rand() % (SCREEN_HEIGHT-50);
 
@@ -299,9 +294,6 @@ void Game::run( )
 			if (currenttime - lastswordspawntime >= swordSpawninterval) 
 			{
 				lastswordspawntime = currenttime;
-				const int Padding = 50; // Adjust the padding as needed
-				// int x = Padding + rand() % ((SCREEN_WIDTH-50) - 2 * Padding);
-				// int y = Padding + rand() % ((SCREEN_HEIGHT-50) - 2 * Padding);
 				int x = rand() % (SCREEN_WIDTH-50);
             	int y = rand() % (SCREEN_HEIGHT-50);
 

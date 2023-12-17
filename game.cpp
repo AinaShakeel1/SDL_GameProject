@@ -93,6 +93,7 @@ bool Game::loadMedia()
     gTexture = loadTexture("underwater.jpg");
 	gTextureGameOver = loadTexture("Game Over.png");
 	gTextureWinningScreen = loadTexture("WinningScreen.png");
+	gTextureGameStart = loadTexture("Game Start.png");
 
 	if(assets==NULL || gTexture==NULL || assets2==NULL || assets3==NULL || assets4==NULL || assest5 == NULL || assest6 == NULL || gTextureWinningScreen == NULL || gTextureGameOver == NULL)
     {
@@ -136,8 +137,10 @@ void Game::close()
 	SDL_DestroyTexture(gTexture);
 	SDL_DestroyTexture(gTextureGameOver);
 	SDL_DestroyTexture(gTextureWinningScreen);
+	SDL_DestroyTexture(gTextureGameStart);
     gTextureGameOver = NULL;
 	gTextureWinningScreen = NULL;
+	gTextureGameStart = NULL;
 	
 	//Destroy window
 	SDL_DestroyRenderer( gRenderer );
@@ -213,19 +216,37 @@ void Game::run( )
 		c=c+20;
 	}
 	
+	// variable to track whether the game is in the start state
+	bool inStartScreen = true;
+
 	while( !quit )
 	{
 		
 		//Handle events on queue
 		while( SDL_PollEvent( &e ) != 0 )
 		{
+			// Check if the user clicks on the start screen
+            if (inStartScreen && e.type == SDL_MOUSEBUTTONDOWN)
+            {
+                // Transition to the main game loop
+                inStartScreen = false;
+            }
 			//User requests quit
 			if( e.type == SDL_QUIT )
 			{
 				quit = true;
 			}
 		}
-
+			// Render the start screen if still in the start state
+        if (inStartScreen)
+        {
+            // Draw the start screen texture
+            SDL_RenderCopy(gRenderer, gTextureGameStart, NULL, NULL);
+            // Present the renderer
+            SDL_RenderPresent(gRenderer);
+            // Continue to the next iteration of the game loop
+            continue;
+        }
 			Uint32 currenttime=SDL_GetTicks();
 			//for shells
 			if (currenttime - lastSeashellSpawnTime >= seashellSpawnInterval) {

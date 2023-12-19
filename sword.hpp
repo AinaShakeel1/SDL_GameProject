@@ -18,9 +18,6 @@ public:
 private:
     SDL_Rect swordRect;
     SDL_Rect moverRect;
-//     bool flyingUp;
-//     int swordSpeed;
-//     int swordSpeedVertical;
 };
 
 #endif // sword_hpp

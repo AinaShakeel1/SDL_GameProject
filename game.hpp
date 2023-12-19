@@ -20,11 +20,9 @@ public:
     bool init();
     bool loadMedia();
     void close();
-    // void endGame();
     
     SDL_Texture* loadTexture(std::string path);
     void run();
-    // bool checkCollision(const SDL_Rect& rect1, const SDL_Rect& rect2);
 
 private:
     
@@ -34,7 +32,6 @@ private:
     SDL_Window* gWindow = nullptr;
     SDL_Renderer* gRenderer = nullptr;
     SDL_Texture* gTexture = nullptr;
-    // SDL_Texture* gTexture2 = nullptr; //adding this one for end screen
     SDL_Texture* assets = nullptr;
     SDL_Texture* assets2=nullptr;
     SDL_Texture* assets3=nullptr;

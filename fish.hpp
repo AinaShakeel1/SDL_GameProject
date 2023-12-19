@@ -19,10 +19,6 @@ protected:
     SDL_Rect srcRect;
     SDL_Rect moverRect;
     virtual void pushToVector() = 0;
-    // std::vector<HarmlessFish> harmlessFishList; 
-    // std::vector<KillerFish> killerFishList;
-    // std::vector<HarmlessFish>harmlessfislist;
-    //int frame;
 };
 
 #endif // FISH_HPP

@@ -323,11 +323,6 @@ void Game::run( )
             mermaidList[i].update();
         }
 
-		// //update the sword object
-		// for (size_t i = 0; i < swordlist.size(); i++) {
-    	// 	swordlist[i].update();
-		// }
-
 		if (mermaidList[0].getScore() >= 100) {
             SDL_RenderClear(gRenderer);
             SDL_RenderCopy(gRenderer, gTextureWinningScreen, NULL, NULL);
@@ -414,8 +409,6 @@ void Game::run( )
 		SDL_RenderCopy(gRenderer, gTexture, NULL, NULL);//Draws background to renderer
 		//***********************draw the objects here********************
 		
-		//drawObjects(gRenderer, assets);
-		// humania.drawObjects(gRenderer, assets);
 
 		SDL_Color textColor = {255, 255, 255}; // White color
 		std::string scoreText = "Score: " + std::to_string(mermaidList[0].getScore());
@@ -438,13 +431,12 @@ void Game::run( )
 			killerFishList[i].drawObjects(gRenderer, assets);
 		}
 
-// Draw HarmlessFish objects using a traditional for loop
+		// Draw HarmlessFish objects using a traditional for loop
 		for (size_t i = 0; i < harmlessfishlist.size(); ++i)
 		{
 			harmlessfishlist[i].drawObjects(gRenderer, assets2);
 		}
 
-		//draw seashells
 		// Draw the seashells
         for (size_t i = 0; i < seashellList.size(); ++i) {
             seashellList[i].draw(gRenderer, assets3);
@@ -466,12 +458,6 @@ void Game::run( )
 		 for (size_t i = 0; i < flowerlist.size(); ++i) {
             flowerlist[i].draw(gRenderer, asset7);
         }
-
-		// Handle input for the mermaid
-        // for (size_t i = 0; i < mermaidList.size(); ++i) {
-        //     mermaidList[i].handleInput(e);
-		// 	mermaidList[i].update();
-        // }
 
 		//****************************************************************
     	SDL_RenderPresent(gRenderer); //displays the updated renderer

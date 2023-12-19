@@ -4,7 +4,6 @@
 
 HarmlessFish::HarmlessFish(int x, int y) : Fish(1000, rand()%600, 34, 17,247,265), frame(0) {
     // Set specific initial poses for HarmlessFish
-    // Note: You can modify these values as needed
     srcRect = {247, 265, 34, 17};
 }
 

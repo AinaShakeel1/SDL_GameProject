@@ -49,15 +49,4 @@ You play as a mermaid destined to become the queen of the ocean — but first, y
    .\a.exe
    ```
 
-*(See `how_to_compile.txt` for detailed instructions.)*  
-
----
-
-*(Consider adding a license badge, e.g., MIT or GPL, if applicable.)*  
-
-### Key Improvements:  
-1. **Better Visual Hierarchy** – Headers, tables, and lists improve readability.  
-2. **Asset Preview** – Placeholder for a screenshot (add one if possible).  
-3. **Structured Installation Guide** – Clearer steps for compilation.  
-4. **OOP Table** – Concepts are now easier to scan.  
-5. **Consistent Formatting** – Fixed filename casing (`how_to_compile.txt` vs original).  
+*(See `How To Compile.txt` for detailed instructions.)*  
